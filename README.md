@@ -40,11 +40,42 @@ If you are installing Cranberry Cookie for the first time, you will need to run 
     ```
 
     **NOTE:** The `migrate:fresh` command destroys all data in the database. Do not run this command in a production environment.
+## Testing
+
+This project includes comprehensive test suites using PHPUnit.
+
+### Running Tests
+
+To run the test suite:
+
+```bash
+# Run all tests
+php artisan test
+
+# Run tests with coverage report
+php artisan test --coverage
+
+# Run specific test file
+php artisan test tests/Unit/Models/UserTest.php
+
+# Run tests in verbose mode
+php artisan test --verbose
+```
+
+### Test Structure
+
+- **Unit Tests** (`tests/Unit/`): Test individual units of code in isolation
+- **Feature Tests** (`tests/Feature/`): Test user-facing features and HTTP endpoints
+
+### CI/CD
+
+This project uses GitHub Actions for continuous integration. The CI pipeline:
+- Runs on every push and pull request
+- Executes the full test suite
+- Generates code coverage reports
+- Enforces minimum 80% code coverage
+
 ## To install PM2 globally and start your application using a configuration file:
-1. Install PM2 globally:
-    ```bash
-    npm install -g pm2
-    ```
 
 2. Start your application using the provided ecosystem configuration file (`ecosystem.config.cjs`):
     ```bash
