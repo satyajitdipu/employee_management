@@ -700,6 +700,7 @@ class RepoAnalyzer:
         r'.*\.test\.(js|ts|jsx|tsx)$', r'.*\.spec\.(js|ts|jsx|tsx)$',
         r'test/.*', r'tests/.*', r'__tests__/.*',
         r'.*Test\.(java|scala)$', r'.*Spec\.(java|scala)$',
+        r'.*Test\.php$', r'.*_test\.php$', r'tests/.*\.php$', r'Test/.*\.php$',
     ]
 
     CI_FILES = [
@@ -718,6 +719,7 @@ class RepoAnalyzer:
         'rspec': ['rspec', '.rspec', 'spec/'],
         'go test': ['_test.go'],
         'cargo test': ['Cargo.toml'],
+        'phpunit': ['phpunit', 'phpunit.xml', 'composer.json'],
     }
 
     def __init__(self, repo_path: str, owner: Optional[str] = None, repo_name: Optional[str] = None, platform_client: Optional[PlatformClient] = None):
