@@ -21,3 +21,17 @@ Route::post('/oauth/server', [OAuthController::class, 'handleAuthorizationOauth'
 // Route::post('/oauth/auth', [OAuthController::class, 'handleAuthorizationLogin'])->name('handleAuthorizationLogin');
 
 Route::resource('attendances', AttendanceController::class);
+
+// Performance Review Routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('performance-reviews', \App\Http\Controllers\PerformanceReviewController::class);
+    Route::get('performance-reviews/my-reviews', [\App\Http\Controllers\PerformanceReviewController::class, 'myReviews']);
+    Route::get('performance-reviews/statistics', [\App\Http\Controllers\PerformanceReviewController::class, 'statistics']);
+    Route::get('performance-reviews/report', [\App\Http\Controllers\PerformanceReviewController::class, 'report']);
+    Route::get('performance-reviews/history', [\App\Http\Controllers\PerformanceReviewController::class, 'history']);
+    Route::post('performance-reviews/bulk', [\App\Http\Controllers\PerformanceReviewController::class, 'bulkCreate']);
+    Route::get('performance-reviews/periods', [\App\Http\Controllers\PerformanceReviewController::class, 'periods']);
+    Route::get('performance-reviews/categories', [\App\Http\Controllers\PerformanceReviewController::class, 'categories']);
+    Route::post('performance-reviews/{performanceReview}/submit', [\App\Http\Controllers\PerformanceReviewController::class, 'submit']);
+    Route::post('performance-reviews/{performanceReview}/complete', [\App\Http\Controllers\PerformanceReviewController::class, 'complete']);
+});
