@@ -50,6 +50,9 @@ jobs:
     - name: Run database migrations
       run: php artisan migrate --force
 
+    - name: Run database seeders
+      run: php artisan db:seed --force
+
     - name: Run tests
       run: bash run-tests.sh
 

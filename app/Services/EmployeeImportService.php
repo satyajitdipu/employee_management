@@ -94,7 +94,7 @@ class EmployeeImportService
      * @param array $headers
      * @return array
      */
-    private function validateHeaders(array $headers): array
+    protected function validateHeaders(array $headers): array
     {
         $requiredHeaders = ['first_name', 'last_name', 'email'];
         $allowedHeaders = [

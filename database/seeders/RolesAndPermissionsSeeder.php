@@ -58,6 +58,15 @@ class RolesAndPermissionsSeeder extends Seeder
                 'delete departments',
             ]);
 
+        Role::create(['name' => 'HR Admin'])
+            ->givePermissionTo([
+                'viewAny employees',
+                'view employees',
+                'create employees',
+                'update employees',
+                'delete employees',
+            ]);
+
         Role::create(['name' => 'employee'])
             ->givePermissionTo([]);
     }

@@ -170,7 +170,7 @@ class EmployeeImportServiceTest extends TestCase
 
         $this->assertEquals(0, $results['success']);
         $this->assertEquals(1, $results['failed']);
-        $this->assertStringContains('Column count mismatch', $results['errors'][0]);
+        $this->assertStringContainsString('Column count mismatch', $results['errors'][0]);
     }
 
     /** @test */

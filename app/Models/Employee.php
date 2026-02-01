@@ -32,6 +32,7 @@ class Employee extends Model implements HasMedia
 
     protected $fillable = [
         'employee_code',
+        'email',
         'user_id',
         'manager_id',
         'department_id',
@@ -51,6 +52,8 @@ class Employee extends Model implements HasMedia
 
         'field',
         'employee_type_id',
+        'salary',
+        'hire_date',
     ];
     protected $casts = [
         'field' => 'array',
