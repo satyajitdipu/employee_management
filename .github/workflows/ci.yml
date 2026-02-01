@@ -51,10 +51,11 @@ jobs:
       run: php artisan migrate --force
 
     - name: Run tests
-      run: php artisan test --coverage --min=80
+      run: bash run-tests.sh
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
         file: ./coverage.xml
+        flags: php
         fail_ci_if_error: false
