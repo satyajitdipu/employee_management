@@ -43,11 +43,12 @@ class EmployeesSeeder extends Seeder
             $gender = $faker->randomElement(['male', 'female', 'other']);
             $first_name = $faker->firstName($gender);
             $last_name = $faker->lastName();
-            $work_email = $faker->email();
+            $work_email = $faker->unique()->safeEmail();
             $birthdate = $faker->dateTimeBetween('-60 years', '-18 years');
 
             Employee::create([
                 'employee_code' => sprintf("NTE-%03d", $i),
+                'email' => $work_email,
                 'user_id' => User::factory()->create([
                     'name' => "{$first_name} {$last_name}",
                     'email' => $work_email,
