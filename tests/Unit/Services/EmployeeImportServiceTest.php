@@ -216,10 +216,17 @@ class EmployeeImportServiceTest extends TestCase
 
     protected function tearDown(): void
     {
-        parent::tearDown();
-
-        foreach ($this->tempFiles as $file) {
-            @unlink($file);
+        try {
+            foreach ($this->tempFiles as $file) {
+                if (is_string($file) && file_exists($file)) {
+                    @unlink($file);
+                }
+            }
+        } catch (\Throwable $e) {
+            // Write full exception details to STDERR so CI logs capture it
+            fwrite(STDERR, "[tearDown][EmployeeImportServiceTest] Exception while cleaning temp files: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n");
+        } finally {
+            parent::tearDown();
         }
     }
 }
