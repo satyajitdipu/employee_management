@@ -16,6 +16,7 @@ class EmployeeImportServiceTest extends TestCase
     use RefreshDatabase;
 
     protected EmployeeImportService $importService;
+    protected array $tempFiles = [];
 
     protected function setUp(): void
     {
@@ -208,7 +209,17 @@ class EmployeeImportServiceTest extends TestCase
     {
         $tempFile = tempnam(sys_get_temp_dir(), 'test_csv');
         file_put_contents($tempFile, $content);
+        $this->tempFiles[] = $tempFile;
 
         return new UploadedFile($tempFile, 'test.csv', 'text/csv', null, true);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        foreach ($this->tempFiles as $file) {
+            @unlink($file);
+        }
     }
 }
