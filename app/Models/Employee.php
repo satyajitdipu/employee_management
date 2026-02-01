@@ -208,6 +208,97 @@ class Employee extends Model implements HasMedia
 
 
     /**
+     * Scope for searching and filtering employees
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array $filters
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearchAndFilter($query, array $filters = [])
+    {
+        // Search functionality
+        if (!empty($filters['search'])) {
+            $searchTerm = $filters['search'];
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('first_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('last_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('middle_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('employee_code', 'like', "%{$searchTerm}%")
+                  ->orWhere('email', 'like', "%{$searchTerm}%")
+                  ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$searchTerm}%"])
+                  ->orWhereRaw("CONCAT(first_name, ' ', middle_name, ' ', last_name) LIKE ?", ["%{$searchTerm}%"]);
+            });
+        }
+
+        // Department filter
+        if (!empty($filters['department_id'])) {
+            $query->where('department_id', $filters['department_id']);
+        }
+
+        // Designation filter
+        if (!empty($filters['designation_id'])) {
+            $query->where('designation_id', $filters['designation_id']);
+        }
+
+        // Employee type filter
+        if (!empty($filters['employee_type_id'])) {
+            $query->where('employee_type_id', $filters['employee_type_id']);
+        }
+
+        // Status filter
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        // Gender filter
+        if (!empty($filters['gender'])) {
+            $query->where('gender', $filters['gender']);
+        }
+
+        // Manager filter
+        if (!empty($filters['manager_id'])) {
+            $query->where('manager_id', $filters['manager_id']);
+        }
+
+        // Date range filters
+        if (!empty($filters['hire_date_from'])) {
+            $query->whereDate('date_of_joining', '>=', $filters['hire_date_from']);
+        }
+
+        if (!empty($filters['hire_date_to'])) {
+            $query->whereDate('date_of_joining', '<=', $filters['hire_date_to']);
+        }
+
+        // Salary range filters
+        if (!empty($filters['salary_min'])) {
+            $query->where('salary', '>=', $filters['salary_min']);
+        }
+
+        if (!empty($filters['salary_max'])) {
+            $query->where('salary', '<=', $filters['salary_max']);
+        }
+
+        // Sorting
+        $sortBy = $filters['sort_by'] ?? 'created_at';
+        $sortDirection = $filters['sort_direction'] ?? 'desc';
+
+        // Validate sort column to prevent SQL injection
+        $allowedSortColumns = [
+            'first_name', 'last_name', 'employee_code', 'email', 'status',
+            'date_of_joining', 'salary', 'created_at', 'updated_at'
+        ];
+
+        if (in_array($sortBy, $allowedSortColumns)) {
+            $query->orderBy($sortBy, $sortDirection);
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        return $query;
+    }
+
+
+    /**
      * > This function returns the attendances of the employee
      *
      * @return The attendances for the employee.
